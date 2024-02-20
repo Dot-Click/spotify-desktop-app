@@ -48,10 +48,6 @@ const Home = () => {
     }
   };
 
-  console.log("categories===================", category);
-  console.log("playlist===================", playlist);
-
-  console.log(Math.round(Math.random() * categories?.length));
   useEffect(() => {
     if (categories?.length > 0) {
       const randomValues = categories?.map(
