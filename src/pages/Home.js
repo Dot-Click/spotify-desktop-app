@@ -10,6 +10,7 @@ import {
 import { fetchCategories, fetchPlaylist } from "../redux/actions/spotifyAction";
 import { useDispatch, useSelector } from "react-redux";
 // import spotifyLogo from "../assets/spotify.png";
+import spotifyLogo from "../assets/spotify.png";
 import { sideBar } from "../data/data";
 import { useDisclosure } from "@mantine/hooks";
 const Home = () => {
@@ -62,7 +63,7 @@ const Home = () => {
   return (
     <div className="green-box py-3">
       <div className="container">
-        {/* <img src={spotifyLogo} /> */}
+        <img src={spotifyLogo} />
         <div className="glass-box my-3">
           <div className="row">
             <div className="col-xl-9 col-lg-12">
