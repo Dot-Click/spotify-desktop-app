@@ -31,13 +31,13 @@ module.exports = {
       devServer: {
         headers: {
           "Content-Security-Policy":
-            "default-src 'self' 'unsafe-inline' data:; connect-src 'self' https://spotify-playlist-be-production.up.railway.app;",
+            "default-src 'self' 'unsafe-inline' data:; connect-src 'self' https://spotify-json.vercel.app;",
         },
       },
       config: {
         mainConfig: "./webpack.main.config.js",
         devContentSecurityPolicy:
-          "connect-src 'self' https://spotify-playlist-be-production.up.railway.app 'unsafe-eval'",
+          "connect-src 'self' https://spotify-json.vercel.app 'unsafe-eval'",
         renderer: {
           config: "./webpack.renderer.config.js",
 

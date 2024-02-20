@@ -10,26 +10,77 @@ import {
 import { fetchCategories, fetchPlaylist } from "../redux/actions/spotifyAction";
 import { useDispatch, useSelector } from "react-redux";
 // import spotifyLogo from "../assets/spotify.png";
-import spotifyLogo from "../assets/spotify.png";
 import { sideBar } from "../data/data";
 import { useDisclosure } from "@mantine/hooks";
+import axios from "axios";
+
 const Home = () => {
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(true);
   const [categoriesList, setCategoriesList] = useState([]);
   const [search, setSearch] = useState("");
   const [randomColours, setRandomColours] = useState([]);
   const [category, setCategory] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const { categories, loading, pagesCount, playlist } = useSelector(
-    (state) => state.spotify
-  );
+  const [playlist, setPlaylist] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const fetchPlaylist = async (search, category) => {
+    try {
+      const response = await axios.get(
+        "https://spotify-json.vercel.app/playlist.json"
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+
+        const filteredData = data.filter((playlist) => {
+          const categoryRegex = new RegExp(category, "i");
+          const searchRegex = new RegExp(search, "i");
+          return (
+            categoryRegex.test(playlist.category) &&
+            searchRegex.test(playlist.title)
+          );
+        });
+
+        setPlaylist(filteredData);
+        setLoading(false);
+      } else {
+        console.error("Failed to fetch playlist data");
+      }
+    } catch (error) {
+      console.error("Error fetching playlist data:", error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://spotify-json.vercel.app/category.json"
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        const categoriesWithAll = ["All", ...data];
+        setCategories(categoriesWithAll);
+        setLoading(false);
+      } else {
+        console.error("Failed to fetch categories data");
+      }
+    } catch (error) {
+      console.error("Error fetching categories data:", error);
+    }
+  };
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchPlaylist());
+    fetchPlaylist();
+    fetchCategories();
   }, []);
+
+  console.log("fetchPlaylist1", playlist);
+  console.log("fetchCategories1", categories);
   const paginationHandler = async (page) => {
     setCurrentPage(page);
     const res = await dispatch(fetchPlaylist(currentPage, search, category));
@@ -37,17 +88,19 @@ const Home = () => {
 
   const handleCategoryFilter = (value, e) => {
     e.preventDefault();
-    dispatch(fetchPlaylist(currentPage, "", value));
+    const categoryFilter = value === "All" ? "" : value;
+    fetchPlaylist("", categoryFilter);
     setCategory(value);
   };
   const handleSearchFilter = (e) => {
     if (e.keyCode === 13) {
-      dispatch(fetchPlaylist(currentPage, e.target.value, category));
+      fetchPlaylist(e.target.value, category);
     } else {
-      dispatch(fetchPlaylist(currentPage, e.target.value, category));
+      fetchPlaylist(e.target.value, category);
     }
   };
 
+  console.log(Math.round(Math.random() * categories?.length));
   useEffect(() => {
     if (categories?.length > 0) {
       const randomValues = categories?.map(
@@ -59,7 +112,7 @@ const Home = () => {
   return (
     <div className="green-box py-3">
       <div className="container">
-        <img src={spotifyLogo} />
+        {/* <img src={spotifyLogo} /> */}
         <div className="glass-box my-3">
           <div className="row">
             <div className="col-xl-9 col-lg-12">

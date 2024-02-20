@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const axios = require("axios");
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
@@ -12,23 +11,17 @@ const createWindow = () => {
     width: 800,
     height: 600,
     autoHideMenuBar: false,
+    // icon: path.join(__dirname + "./assets/spotify.ico"),
+    // icon: "./assets/spotify.png",
+    icon: path.join(__dirname, "assets", "spotify.png"),
+
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       allowRunningInsecureContent: true,
+      devTools: false,
     },
   });
-  axios
-    .post(
-      "https://spotify-playlist-be-production.up.railway.app/spotify/playlist",
-      {}
-    )
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // Handle errors
-      console.error(error);
-    });
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 

@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import store from "./redux/store";
-import Entry from "./Entry";
 import Home from "./pages/Home";
 
 const root = createRoot(document.body);

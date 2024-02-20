@@ -11,7 +11,27 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "proxy": "https://spotify-playlist-be-production.up.railway.app/",
+  "build": {
+    "appId": "your.app.id",
+    "asar": true,
+    "productName": "Your App Name",
+    "directories": {
+      "output": "out"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./src/assets/spotify.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "./src/assets/spotify.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "./src/assets/spotify.png"
+    }
+  },
+  "proxy": "https://spotify-json.vercel.app",
   "keywords": [],
   "author": {
     "name": "umer memon",
@@ -48,6 +68,7 @@
     "axios": "^1.6.7",
     "bootstrap": "^5.3.2",
     "dayjs": "^1.11.10",
+    "electron-packager": "^17.1.2",
     "electron-squirrel-startup": "^1.0.0",
     "embla-carousel-react": "^7.1.0",
     "file-loader": "^6.2.0",
