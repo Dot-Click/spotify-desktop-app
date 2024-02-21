@@ -10,10 +10,10 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar: false,
+    autoHideMenuBar: true,
     // icon: path.join(__dirname + "./assets/spotify.ico"),
     // icon: "./assets/spotify.png",
-    icon: path.join(__dirname, "assets", "spotify.png"),
+    // icon: path.join(__dirname, "assets", "spotify.png"),
 
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
