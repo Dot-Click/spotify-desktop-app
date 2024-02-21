@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { fetchCategories, fetchPlaylist } from "../redux/actions/spotifyAction";
 import { useDispatch, useSelector } from "react-redux";
-// import spotifyLogo from "../assets/spotify.png";
+import spotifyLogo from "../assets/spotify.png";
 import { sideBar } from "../data/data";
 import { useDisclosure } from "@mantine/hooks";
 import axios from "axios";
@@ -22,7 +22,7 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [randomColours, setRandomColours] = useState([]);
   const [category, setCategory] = useState("");
-  const [activeCategory, setActiveCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [playlist, setPlaylist] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -112,7 +112,7 @@ const Home = () => {
   return (
     <div className="green-box py-3">
       <div className="container">
-        {/* <img src={spotifyLogo} /> */}
+        <img src={spotifyLogo} />
         <div className="glass-box my-3">
           <div className="row">
             <div className="col-xl-9 col-lg-12">

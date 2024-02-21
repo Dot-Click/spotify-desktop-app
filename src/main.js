@@ -8,11 +8,14 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 1200,
     height: 600,
     autoHideMenuBar: true,
     // icon: path.join(__dirname + "./assets/spotify.ico"),
-    // icon: "./assets/spotify.png",
+    // icon: __dirname + "/spotify.png",
+    icon: path.join(__dirname, "/spotify.ico"),
+    // icon: "https://cdn.icon-icons.com/icons2/729/PNG/512/google_icon-icons.com_62736.png",
+    // icon: "spotify.png",
     // icon: path.join(__dirname, "assets", "spotify.png"),
 
     webPreferences: {

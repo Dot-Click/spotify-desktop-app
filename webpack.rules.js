@@ -28,6 +28,18 @@ module.exports = [
     },
   },
 
+  {
+    test: /\.(png|jpg|gif|svg)$/,
+    use: [
+      {
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "images/", // This is where your images will be placed in the output folder
+        },
+      },
+    ],
+  },
   // Add other common rules here...
 
   // Put your webpack loader rules in this array.  This is where you would put
