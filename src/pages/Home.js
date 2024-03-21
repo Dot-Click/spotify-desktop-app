@@ -95,7 +95,12 @@ const Home = () => {
   const handleSearchFilter = (e) => {
     if (e.keyCode === 13) {
       fetchPlaylist(e.target.value, category);
+    } else if (category === "All") {
+      fetchPlaylist(e.target.value, "");
     } else {
+      if (category === "All") {
+        fetchPlaylist(e.target.value, "");
+      }
       fetchPlaylist(e.target.value, category);
     }
   };
@@ -110,9 +115,8 @@ const Home = () => {
     }
   }, [categories]);
   return (
-    <div className="green-box py-3">
+    <div className="green-box d-flex justify-content-center align-items-center py-3">
       <div className="container">
-        <img src={spotifyLogo} />
         <div className="glass-box my-3">
           <div className="row">
             <div className="col-xl-9 col-lg-12">
