@@ -9,11 +9,9 @@ import {
 } from "@mantine/core";
 import { fetchCategories, fetchPlaylist } from "../redux/actions/spotifyAction";
 import { useDispatch, useSelector } from "react-redux";
-import spotifyLogo from "../assets/spotify.png";
-import { sideBar } from "../data/data";
+import Logo from "../assets/vector.png";
+import { sideBar, staticCategories, playlists } from "../data/data";
 import { useDisclosure } from "@mantine/hooks";
-import axios from "axios";
-
 const Home = () => {
   const dispatch = useDispatch();
   const [opened, { open, close }] = useDisclosure(false);
@@ -22,34 +20,24 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [randomColours, setRandomColours] = useState([]);
   const [category, setCategory] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [playlist, setPlaylist] = useState([]);
   const [categories, setCategories] = useState([]);
 
   const fetchPlaylist = async (search, category) => {
     try {
-      const response = await axios.get(
-        "https://spotify-json.vercel.app/playlist.json"
-      );
-
-      if (response.status === 200) {
-        const data = response.data;
-
-        const filteredData = data.filter((playlist) => {
-          const categoryRegex = new RegExp(category, "i");
-          const searchRegex = new RegExp(search, "i");
-          return (
-            categoryRegex.test(playlist.category) &&
-            searchRegex.test(playlist.title)
-          );
-        });
-
-        setPlaylist(filteredData);
-        setLoading(false);
-      } else {
-        console.error("Failed to fetch playlist data");
-      }
+      const data = playlists;
+      const filteredData = data?.filter((playlist) => {
+        const categoryRegex = new RegExp(category, "i");
+        const searchRegex = new RegExp(search, "i");
+        return (
+          categoryRegex.test(playlist.category) &&
+          searchRegex.test(playlist.title)
+        );
+      });
+      setPlaylist(filteredData);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching playlist data:", error);
     }
@@ -57,30 +45,21 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        "https://spotify-json.vercel.app/category.json"
-      );
-
-      if (response.status === 200) {
-        const data = response.data;
-        const categoriesWithAll = ["All", ...data];
-        setCategories(categoriesWithAll);
-        setLoading(false);
-      } else {
-        console.error("Failed to fetch categories data");
-      }
+      const data = staticCategories;
+      const categoriesWithAll = ["All", ...data];
+      setCategories(categoriesWithAll);
+      setLoading(false);
     } catch (error) {
-      console.error("Error fetching categories data:", error);
+      console.error("Error fetching playlist data:", error);
     }
   };
-
   useEffect(() => {
     fetchPlaylist();
     fetchCategories();
   }, []);
 
-  console.log("fetchPlaylist1", playlist);
-  console.log("fetchCategories1", categories);
+  console.log("fetchPlaylist", playlist);
+  console.log("fetchCategories", categories);
   const paginationHandler = async (page) => {
     setCurrentPage(page);
     const res = await dispatch(fetchPlaylist(currentPage, search, category));
@@ -95,12 +74,7 @@ const Home = () => {
   const handleSearchFilter = (e) => {
     if (e.keyCode === 13) {
       fetchPlaylist(e.target.value, category);
-    } else if (category === "All") {
-      fetchPlaylist(e.target.value, "");
     } else {
-      if (category === "All") {
-        fetchPlaylist(e.target.value, "");
-      }
       fetchPlaylist(e.target.value, category);
     }
   };
@@ -115,9 +89,13 @@ const Home = () => {
     }
   }, [categories]);
   return (
-    <div className="green-box d-flex justify-content-center align-items-center py-3">
+    <div className="green-box py-1">
       <div className="container">
-        <div className="glass-box my-3">
+        <div className="img-container">
+          <img src={Logo} className="logo" />
+        </div>
+
+        <div className="glass-box my-1">
           <div className="row">
             <div className="col-xl-9 col-lg-12">
               <div className="d-flex justify-content-between align-items-center">
@@ -140,6 +118,9 @@ const Home = () => {
                     className="search-input mx-3"
                     placeholder="What do you want to listen to?"
                     onKeyDown={handleSearchFilter}
+                    onChange={(e) =>
+                      e.target.value === "" && fetchPlaylist(e.target.value, "")
+                    }
                   />
                 </div>
                 <svg
